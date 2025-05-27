@@ -1,13 +1,13 @@
 resource "google_container_cluster" "primary" {
   name     = var.cluster_name
-  location = var.location
+  location = var.zone
 
   network    = var.network_name
   subnetwork = var.gke_subnet_name
 
   private_cluster_config {
     enable_private_nodes    = true
-    enable_private_endpoint = false
+    enable_private_endpoint = true
     master_ipv4_cidr_block  = "172.16.0.0/28"
   }
 
@@ -36,7 +36,7 @@ resource "google_container_cluster" "primary" {
 
 resource "google_container_node_pool" "primary" {
   name       = "primary-node-pool"
-  location   = var.location
+  location   = var.zone
   cluster    = google_container_cluster.primary.name
   node_count = var.node_count
 
@@ -59,12 +59,12 @@ resource "google_project_iam_member" "gke_service_account_owner" {
 }
 
 resource "google_compute_firewall" "allow_egress_to_gke_master" {
-  name          = "allow-egress-to-gke-master"
-  network       = var.network_name
-  priority      = 1000
+  name     = "allow-egress-to-gke-master"
+  network  = var.network_name
+  priority = 1000
 
-  direction     = "EGRESS"
-  target_tags = ["private-vm"]
+  direction          = "EGRESS"
+  target_tags        = ["private-vm"]
   destination_ranges = ["172.16.0.0/28"]
 
   allow {

@@ -59,7 +59,7 @@ resource "google_compute_firewall" "allow_management_to_restricted" {
   name    = "allow-management-to-restricted"
   network = google_compute_network.gke_vpc.name
 
-  direction = "INGRESS"
+  direction          = "INGRESS"
   source_ranges      = [google_compute_subnetwork.management_subnet.ip_cidr_range]
   destination_ranges = [google_compute_subnetwork.restricted_subnet.ip_cidr_range]
 
@@ -72,7 +72,7 @@ resource "google_compute_firewall" "allow_ssh_to_private_vm" {
   name    = "allow-ssh-to-private-vm"
   network = google_compute_network.gke_vpc.name
 
-  direction = "INGRESS"
+  direction     = "INGRESS"
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["private-vm"]
 

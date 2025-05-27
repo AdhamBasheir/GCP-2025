@@ -28,6 +28,9 @@ resource "google_compute_instance" "private_vm" {
   metadata = {
     enable-oslogin = "TRUE"
     startup-script = local.startup_script
+    cluster-name   = var.cluster_name
+    region         = var.region
+    project-id     = var.project_id
   }
 }
 

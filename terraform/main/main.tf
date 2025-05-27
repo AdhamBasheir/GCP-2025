@@ -8,6 +8,7 @@ module "vpc" {
 module "gke" {
   source              = "../gke"
   project_id          = var.project_id
+  region              = var.region
   zone                = var.zone
   network_name        = module.vpc.vpc_network_name
   gke_subnet_name     = module.vpc.restricted_subnet_name
@@ -15,15 +16,7 @@ module "gke" {
   cluster_name        = var.cluster_name
   pods_range_name     = module.vpc.pods_ip_range_name
   services_range_name = module.vpc.services_ip_range_name
-  location            = var.region
-}
 
-module "gar" {
-  source        = "../gar"
-  project_id    = var.project_id
-  region        = var.region
-  format        = "DOCKER"
-  repository_id = "my-docker-repo"
 }
 
 module "vm" {
